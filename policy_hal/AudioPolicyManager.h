@@ -49,10 +49,7 @@ class AudioPolicyManagerCustom: public AudioPolicyManager
 {
 
 public:
-                AudioPolicyManagerCustom(AudioPolicyClientInterface *clientInterface)
-                : AudioPolicyManager(clientInterface) {
-                    mHdmiAudioDisabled = false;
-                    mHdmiAudioEvent = false;}
+        AudioPolicyManagerCustom(AudioPolicyClientInterface *clientInterface);
 
         virtual ~AudioPolicyManagerCustom() {}
 
@@ -61,6 +58,8 @@ public:
                                           const char *device_address,
                                           const char *device_name);
         virtual void setPhoneState(audio_mode_t state);
+        virtual void setForceUse(audio_policy_force_use_t usage,
+                                 audio_policy_forced_cfg_t config);
 
         virtual bool isOffloadSupported(const audio_offload_info_t& offloadInfo);
 
@@ -70,7 +69,7 @@ protected:
 
          status_t checkAndSetVolume(audio_stream_type_t stream,
                                                    int index,
-                                                   const sp<SwAudioOutputDescriptor>& outputDesc,
+                                                   const sp<AudioOutputDescriptor>& outputDesc,
                                                    audio_devices_t device,
                                                    int delayMs = 0, bool force = false);
 
@@ -89,7 +88,7 @@ protected:
                              audio_stream_type_t stream,
                              audio_devices_t device,
                              uint32_t *delayMs);
-        status_t stopSource(sp<AudioOutputDescriptor> outputDesc,
+         status_t stopSource(sp<AudioOutputDescriptor> outputDesc,
                             audio_stream_type_t stream,
                             bool forceDeviceUpdate);
         // event is one of STARTING_OUTPUT, STARTING_BEACON, STOPPING_OUTPUT, STOPPING_BEACON   313
